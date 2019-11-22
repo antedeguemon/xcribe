@@ -142,10 +142,15 @@ defmodule Xcribe.ApiBlueprint.Formatter do
           param: camelize(" #{key}"),
           prefix: tab <> "+",
           type: type <> "#{type_of(value)}",
-          value: "#{remove_underline(value)}"
+          value: "#{format_item_value(value)}"
         )
     end)
   end
+
+  defp format_item_value(value) when is_binary(value) or is_atom(value) or is_number(value),
+    do: remove_underline(value)
+
+  defp format_item_value(value), do: type_of(value)
 
   defp get_description(param, desc),
     do: desc |> fetch_key(param, "The #{param}") |> remove_underline()

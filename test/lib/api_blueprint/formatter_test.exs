@@ -340,6 +340,23 @@ defmodule Xcribe.ApiBlueprint.FormatterTest do
              """
     end
 
+    test "with complex structs" do
+      struct = %Request{
+        request_body: %{
+          "printers" => [%{"some" => "value"}, %{"other" => "valhe"}],
+          "name" => "teste"
+        }
+      }
+
+      assert Formatter.request_attributes(struct) == """
+                 + Attributes
+
+                     + name: `teste` (string) - The name
+                     + printers: `array` (array) - The printers
+
+             """
+    end
+
     test "return empty string when no body" do
       struct = %Request{
         request_body: %{}
